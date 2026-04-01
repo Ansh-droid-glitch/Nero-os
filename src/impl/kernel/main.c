@@ -77,27 +77,11 @@ void handle_input(struct KeyboardEvent event) {
 void kernel_main() {
     print_clear();
     print_set_color(PRINT_COLOR_YELLOW, PRINT_COLOR_BLACK);
-    print_str("Welcome to our 64-bit kernel!");
+    print_str("Welcome to our Neros!");
     
     keyboard_init();
     keyboard_set_handler(handle_input);
     
-    uint8_t prev_seconds = 0;
-    
-    for (uint8_t i = 0; i < 5;) {
-        uint8_t seconds = rtc_seconds();
-        
-        if (seconds != prev_seconds) {
-            i++;
-            print_set_color(PRINT_COLOR_GREEN, PRINT_COLOR_BLACK);
-            print_str("\nSeconds: ");
-            print_uint64_dec(seconds);
-        }
-        
-        prev_seconds = seconds;
-    }
-    
-    print_str(" - Seconds loop disabled.\n");
     
     while (1);
 }
