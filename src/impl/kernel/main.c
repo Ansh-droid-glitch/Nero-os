@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-// Request start/end anchors required by Limine v5+
+
 __attribute__((used, section(".limine_requests_start")))
 static volatile uint64_t limine_requests_start_marker[] = {
     0xf6b8f4b39de7d1ae, 0xfab91a6940fcb9cf
@@ -11,13 +11,12 @@ static volatile uint64_t limine_requests_end_marker[] = {
     0x854c3a44, 0xb459a09e
 };
 
-// Base revision (tell Limine we support revision 2)
 __attribute__((used, section(".limine_requests")))
 static volatile uint64_t limine_base_revision[] = {
     0xf9562b2d, 0x07ab71e5, 2
 };
 
-// HHDM request
+
 struct limine_hhdm_response {
     uint64_t revision;
     uint64_t offset;

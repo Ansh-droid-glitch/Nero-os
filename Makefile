@@ -13,11 +13,11 @@ x86_64_asm_object_files := $(patsubst src/impl/x86_64/%.asm, build/x86_64/%.o, $
 x86_64_object_files := $(x86_64_c_object_files) $(x86_64_asm_object_files)
 
 CFLAGS := -ffreestanding -fno-stack-protector -fno-stack-check -fno-lto \
-          -fno-PIC -ffunction-sections -fdata-sections \
+          -fno-PIC \
           -m64 -march=x86-64 -mno-80387 -mno-mmx -mno-sse -mno-sse2 \
           -mno-red-zone -mcmodel=kernel
 
-LDFLAGS := -nostdlib -static -z max-page-size=0x1000 --gc-sections
+LDFLAGS := -nostdlib -static -z max-page-size=0x1000
 
 build/kernel/%.o: src/impl/kernel/%.c
 	mkdir -p $(dir $@)
@@ -35,7 +35,7 @@ build/x86_64/%.o: src/impl/x86_64/%.asm
 build-x86_64: $(kernel_object_files) $(x86_64_object_files)
 	mkdir -p dist/x86_64
 	$(LD) $(LDFLAGS) -o dist/x86_64/kernel.elf -T targets/x86_64/linker.ld \
-      $(kernel_object_files) $(x86_64_object_files)
+	      $(kernel_object_files) $(x86_64_object_files)
 	cp dist/x86_64/kernel.elf targets/x86_64/iso/boot/kernel.elf
 	xorriso -as mkisofs \
 	  -b boot/limine/limine-bios-cd.bin \
