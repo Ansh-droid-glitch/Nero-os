@@ -1,0 +1,4 @@
+v11.1.0
+git submodule add https://github.com/limine-bootloader/limine.git limine
+git -C limine checkout v11.1-binary   
+make -C limine

@@ -1,16 +1,27 @@
-section .multiboot_header
-header_start:
-	; magic number
-	dd 0xe85250d6 ; multiboot2
-	; architecture
-	dd 0 ; protected mode i386
-	; header length
-	dd header_end - header_start
-	; checksum
-	dd 0x100000000 - (0xe85250d6 + 0 + (header_end - header_start))
+section .limine_requests
 
-	; end tag
-	dw 0
-	dw 0
-	dd 8
-header_end:
+limine_base_revision:
+    dq 0xf9562b2d
+    dq 0x07ab71e5
+    dq 2
+
+section .text
+global _start
+extern kernel_main
+
+_start:
+    cld
+    ; Point rsp to our own stack
+    mov rsp, stack_top
+    ; Reset base pointer
+    xor rbp, rbp
+    call kernel_main
+.hang:
+    hlt
+    jmp .hang
+
+section .bss
+align 16
+stack_bottom:
+    resb 16384      ; 16 KiB stack
+stack_top:
